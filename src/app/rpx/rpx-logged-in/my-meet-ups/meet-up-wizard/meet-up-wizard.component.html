@@ -1,0 +1,214 @@
+<ion-header class="my-list-header">
+  <ion-toolbar color="light">
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>MEET UP</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="d-grid text-center" color="dark">
+  <p class="p-3 mt-4 mb-4">
+    Pick a spot, a time, some friends, and go create a meet up.
+  </p>
+
+  <p>Meet up &#64; {{ business?.name }}</p>
+
+  <div class="whosGoingWrapper mt-3 mb-3">
+    <ng-container *ngIf="(importContactList$ | async)?.length > 0">
+      <div *ngFor="let p of (importContactList$ | async)" (click)="actionSheet(null, p)">
+        <ion-label>{{ p?.name | shortenDisplayName }}</ion-label>
+        <ion-avatar aria-hidden="true" slot="start">
+          <img [src]="p?.image ?? './../../../assets/images/guest-rpx-user-01.png'" />
+        </ion-avatar>
+      </div>
+    </ng-container>
+
+    <div *ngFor="let p of (meetUpFriendList$ | async); trackBy: identify" (click)="actionSheet(p)">
+      <ion-label>{{ (p?.user_profile?.rpx_user?.first_name || p?.username || p?.user_profile?.username) | shortenDisplayName }}</ion-label>
+      <ion-avatar slot="start">
+        <img [src]="p.user_profile.rpx_user.default_picture" />
+      </ion-avatar>
+    </div>
+  </div>
+
+  <ng-container *ngIf="(ownerProfile$ | async) as owner">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-text>
+            <p>Meet Up Organizer: {{ owner.rpx_user.first_name }} {{ owner.rpx_user.last_name }}</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+  <ion-datetime-button class="mb-3" datetime="datetime"></ion-datetime-button>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        [min]="minDateValue$()"
+        [value]="(meetUp$ | async)?.time || minDateValue$()"
+        id="datetime"
+        color="dark"
+        (ionChange)="setDate($event)"
+      ></ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+  <form [formGroup]="meetUpForm">
+    <ion-grid class="sb-inputWithIconWrapper">
+      <ion-row>
+        <ion-col>
+          <div
+            *ngIf="submitted$ | async"
+            class="rpx-invalid-feedback rpx-text-gradient rpx-error text-uppercase"
+          >
+            <div
+              *ngIf="f.meetUpName.errors?.required"
+            >
+              Meet up name is required.
+            </div>
+
+            <div *ngIf="f.meetUpName.errors?.wrongLength">
+              Max length is 35 characters.
+            </div>
+
+            <div *ngIf="f.meetUpName.errors?.illegalChars">
+              Only contain letters, numbers, and underscores.
+            </div>
+          </div>
+
+          <input
+            class="sb-input"
+            type="text"
+            formControlName="meetUpName"
+            placeholder="Meet up name"
+          />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div
+            *ngIf="submitted$ | async"
+            class="rpx-invalid-feedback rpx-text-gradient rpx-error text-uppercase"
+          >
+            <div
+              *ngIf="f.meetUpDescription.errors?.required"
+            >
+              Meet up description is required.
+            </div>
+
+            <div *ngIf="f.meetUpDescription.errors?.wrongLength">
+              Max length is 35 characters.
+            </div>
+
+            <div *ngIf="f.meetUpDescription.errors?.illegalChars">
+              Only contain letters, numbers, and underscores.
+            </div>
+          </div>
+
+          <textarea
+            class="rpx-textarea"
+            type="text"
+            formControlName="meetUpDescription"
+            placeholder="Enter a meet up description..."
+          ></textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center">
+        <ion-col>
+          <input class="sb-input" (keyup)="searchFriends($event)" placeholder="Search friends..."  />
+        </ion-col>
+        <ion-col *ngIf="(searchFriendListing$ | async)" size="sm">
+          <ion-buttons>
+            <ion-button (click)="getMyFriends()" id="get-my-friends">
+              <ion-icon name="people-outline" slot="end"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <div class="sb-text-light-green-gradient">OR</div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <div class="importContactsWrapper">
+            <ion-button (click)="importContacts()" class="p-2">
+              <ion-icon name="people-circle-outline" slot="end"></ion-icon>
+              import contacts
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ng-container *ngIf="((myFriendListing$ | async)?.length > 0) && (!(searchFriendListing$ | async))">
+            <ion-list>
+              <ion-item class="pt-2 pb-2" *ngFor="let friend of (myFriendListing$ | async)" color="dark">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img [src]="friend.user_profile.rpx_user.default_picture" />
+                </ion-avatar>
+
+                <ng-container *ngIf="friend?.user_profile?.rpx_user?.first_name else showUsername">
+                  <ion-label>
+                    {{ friend.user_profile.rpx_user.first_name }} {{ friend.user_profile.rpx_user.last_name }}
+                  </ion-label>
+                </ng-container>
+
+                <ng-template #showUsername>
+                  <ion-label>
+                    {{ friend.username }}
+                  </ion-label>
+                </ng-template>
+
+                <ion-button color="dark" slot="end" (click)="addToMeetUp(friend, (friend.user_profile?.rpx_user?.first_name || friend.user_profile.username))">
+                  <ion-icon name="add-circle-outline" size="medium"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+
+          <ng-container *ngIf="(searchFriendListing$ | async)?.length > 0">
+            <ion-list>
+              <ion-item class="pt-2 pb-2" *ngFor="let friend of (searchFriendListing$ | async)" color="dark">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img [src]="friend.user_profile.default_picture" />
+                </ion-avatar>
+
+                <ng-container *ngIf="friend?.user_profile?.first_name else friendUsername;">
+                  <ion-label>
+                    {{ friend.user_profile.first_name }} {{ friend.user_profile.last_name }}
+                  </ion-label>
+                </ng-container>
+
+                <ng-template #friendUsername>
+                  <ion-label>
+                    {{ friend.username }}
+                  </ion-label>
+                </ng-template>
+
+                <ion-button color="dark" slot="end" (click)="addToMeetUp(friend, (friend?.user_profile?.first_name || friend?.username))">
+                  <ion-icon name="add-circle-outline" size="medium"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="submitMeetUp()">
+            SUBMIT
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

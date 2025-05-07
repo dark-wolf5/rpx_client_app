@@ -1,0 +1,74 @@
+<ion-content
+  class="ion-padding-top has-header"
+  *ngIf="showBalanceList$ | async"
+  color="dark"
+>
+  <div class="redeemWindowNavMargin"></div>
+
+  <div
+    class="card rpx-redeemedItem"
+    *ngFor="let balance of balanceList$ | async"
+  >
+    <div class="card-header">
+      <span class="sb-text-light-green-gradient">{{
+        balance.from_business.name
+      }}</span>
+
+      <img
+        *ngIf="balance.from_business.rpx_user.user_type === 1"
+        [src]="'assets/images/home_imgs/find-places-to-eat.png'"
+      />
+      <img
+        *ngIf="balance.from_business.rpx_user.user_type === 2"
+        [src]="'assets/images/home_imgs/find-places-for-shopping.png'"
+      />
+      <img
+        *ngIf="balance.from_business.rpx_user.user_type === 3"
+        [src]="'assets/images/home_imgs/find-events.png'"
+      />
+    </div>
+
+    <div class="card-body text-uppercase">
+      <div class="mb-2">
+        <img class="sb-rewardImage" [src]="balance.from_business.photo" />
+      </div>
+
+      <div class="mb-2">
+        <span [ngClass]="getLpStyle(balance.balance_aggregate)">
+          {{ balance.balance_aggregate | number : '1.0' : 'en-US' }}
+        </span>
+        All Time LP
+      </div>
+
+      <div class="mb-2">
+        UPDATED AT {{ balance.updated_at | date : 'mediumDate' }}
+      </div>
+    </div>
+  </div>
+
+  <ion-button
+    class="mt-4 mb-4"
+    color="secondary"
+    size="small"
+    *ngIf="(showLoadMore$ | async) === true"
+    (click)="loadMoreItems()"
+  >
+    LOAD MORE
+  </ion-button>
+
+  <div
+    class="rpx-no-notis-box"
+    *ngIf="
+      (balanceList$ | async).length === 0 &&
+      (showBalanceList$ | async) &&
+      (loading$ | async) === false
+    "
+  >
+    <i class="fas fa-exclamation-triangle"></i>
+    <br /><br />
+    <p class="rpx-text-gradient">
+      <span>You have not redeemed any points.</span>
+    </p>
+    <br /><br />
+  </div>
+</ion-content>

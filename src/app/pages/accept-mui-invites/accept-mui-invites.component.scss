@@ -1,0 +1,48 @@
+.rpx-AcceptInvite,
+.rpx-meetUp,
+.rpx-inviteList{
+  position:   relative;
+  margin:   0 auto;
+  width:    100%;
+  min-width: 100%;
+  max-width: 100%;
+  color: white;
+  text-align: center;
+}
+
+.rpx-AcceptInvite {
+  color: unset;
+
+  ion-button {
+    --background: #53bf61;
+    --color: white !important;
+  }
+}
+
+.sbAura-green {
+  ion-avatar {
+    border: 3px solid rgba(83, 191, 97, 0.7);
+  }
+}
+
+.sbAura-pending {
+  ion-avatar {
+    border: 3px solid rgb(41, 142, 184);
+  }
+}
+
+.whosGoingWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+
+  div {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

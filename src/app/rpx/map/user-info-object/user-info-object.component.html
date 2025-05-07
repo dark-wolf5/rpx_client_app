@@ -1,0 +1,38 @@
+<div
+  class="rpx-overlay-window"
+  [ngStyle]="{'background-color': 'rgba(0,0,0,.53)'}"
+>
+  <div class="sb-closeButton" (click)="closeThis()">
+    <i class="fa fa-times"></i>
+  </div>
+
+  <div
+    class="rpx-profile-pop animated flipInX"
+    ngHammer="{ event : 'swipe', direction : 'up'}"
+    (eventTriggered)="closeThis()"
+    [ngStyle]="{'background-color': currentMarker.bg_color}"
+  >
+    <div class="rpx-profile-right-username">
+      {{ currentMarker.username }}
+    </div>
+
+    <div
+      class="rpx-profile-right-user-default"
+      *ngIf="
+        currentMarker.default_picture | defaultImage as userBackgroundImage
+      "
+      [ngStyle]="{background: 'url(' + userBackgroundImage + ')'}"
+    ></div>
+
+    <div
+      class="rpx-profile-right-visit-profile"
+      (click)="viewProfile(currentMarker.username)"
+    >
+      View Profile
+    </div>
+
+    <div class="rpx-bar-profile-description">
+      {{ currentMarker.description }}
+    </div>
+  </div>
+</div>

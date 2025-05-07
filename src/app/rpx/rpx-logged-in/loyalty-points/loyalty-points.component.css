@@ -1,0 +1,151 @@
+span.sb-loyalty-points {
+  font-size: 10rem !important;
+  color: #fff !important;
+  border-right: unset !important;
+}
+img.sb-loyalty-points {
+  width: 25px;
+  min-width: 25px;
+  max-width: 25px;
+  cursor: pointer;
+  vertical-align: unset;
+}
+h3 {
+  color: white;
+}
+p {
+  position: relative;
+  margin: 0 auto;
+  max-width: 100%;
+}
+.sb-input {
+  text-align: center;
+  width: 450px;
+  min-width: 450px;
+}
+.rpx-overlay-window {
+  display: flex !important;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  background: #332f3e;
+  text-align: center;
+  z-index: 97;
+}
+.sb-loyalty-points-wrapper {
+  position: relative;
+}
+.sb-budget-wrapper {
+  position: relative;
+}
+.fa-question-circle {
+  margin-right: 5px;
+}
+.sb-helpBlock {
+  position: relative;
+  margin: 0 auto;
+  max-width: 650px;
+}
+.sb-loyalty-points.sb-text-light-green-gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  letter-spacing: unset;
+  line-height: unset;
+}
+.sb-loyalty-points-new {
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+}
+.sb-added-loyalty-points {
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  font-size: 3.5rem;
+  line-height: 3.5rem;
+  z-index: 999;
+}
+.rpx-howDoesItWork {
+  font-size: 0.8rem;
+}
+.sb-helpBlock {
+  font-size: 0.8rem;
+  margin-bottom: 30px;
+}
+.rpx-lpResetInfo {
+  font-size: 1rem;
+}
+h5 {
+  font-size: 1rem;
+}
+.rpx-loyaltyPointsInfo {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.rpx-overlay-window {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+.fa-refresh {
+  color: white;
+  margin-left: 15px;
+  font-size: 0.8rem;
+}
+@media (max-width: 768px) {
+  span.sb-loyalty-points {
+    font-size: 7rem !important;
+  }
+}
+@media (max-width: 650px) {
+  .sb-helpBlock {
+    font-size: 0.7rem;
+    min-width: 92%;
+    width: 92%;
+    max-width: 92%;
+    margin-bottom: 60px;
+  }
+  .rpx-loyaltyPointsInfo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .rpx-redeemItem {
+    max-width: 94%;
+    min-width: 94%;
+    width: 94%;
+  }
+}
+@media (max-width: 460px) {
+  .rpx-lpResetInfo {
+    font-size: 0.6rem;
+  }
+  .sb-input {
+    width: 94%;
+    min-width: 94%;
+    max-width: 94%;
+  }
+  .sb-budget-wrapper {
+    width: 91%;
+    min-width: 91%;
+    max-width: 91%;
+  }
+  h4 {
+    font-size: 1rem;
+    padding: 0px;
+  }
+  .rpx-input-info {
+    font-size: 0.8rem;
+  }
+  span.sb-loyalty-points {
+    font-size: 4rem !important;
+    margin-right: unset;
+  }
+  img.sb-loyalty-points {
+    display: none;
+  }
+  #sp-lpTitle {
+    margin-bottom: 0px !important;
+  }
+}

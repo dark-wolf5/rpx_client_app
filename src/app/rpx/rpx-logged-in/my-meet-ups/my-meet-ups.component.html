@@ -1,0 +1,48 @@
+<div>
+  <h3 class="rpx-text-gradient mb-3">
+    <ng-container *ngIf="latestMeetUp$() as noUpcoming else noUpcoming ">
+      upcoming...
+    </ng-container>
+    <ng-template #noUpcoming>
+      meet up!
+    </ng-template>
+  </h3>
+
+  <ng-container *ngIf="latestMeetUp$() as latestMeetUp">
+    <div (click)="myMeetUpsModal()">
+      <p class="p-4">
+        <span>{{ latestMeetUp.time_friendly }}</span><br/>
+        <span style="white-space: pre-line">&#64;<b>{{ latestMeetUp.business?.name }}</b></span><br/>
+      </p>
+    </div>
+  </ng-container>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div style="text-align: center;" class="mb-3">
+          <ion-button (click)="startWizard()" id="startMyMeetUps">
+            <ion-icon name="fast-food" slot="end"></ion-icon>
+            start
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="findPeople()">
+          <ion-icon name="people" slot="end"></ion-icon>
+          rpx friends
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="myMeetUpsModal()">
+          <ion-icon name="calendar" slot="end"></ion-icon>
+          my meet ups
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

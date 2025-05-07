@@ -1,0 +1,14 @@
+<div (click)="openRedeemed.emit()">
+  <h5
+    id="sp-lpTitle"
+    class="rpx-text-gradient text-center text-uppercase mt-4 mb-5"
+  >
+    LOYALTY POINTS
+  </h5>
+
+  <p class="mt-4 mb-4">
+    <span class="sb-loyalty-points cursor-pointer">
+      {{ loyaltyPointBalance$ | async | number : '1.0' : 'en-US' }}
+    </span>
+  </p>
+</div>

@@ -1,0 +1,116 @@
+<ion-menu menuId="logged-in-menu" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="dark">
+      <ion-title>It's on us.</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding" color="dark">
+    <ion-list>
+      <ion-item
+        class="ion-padding-top ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="home()"
+      >
+        <ion-icon name="home" slot="start"></ion-icon>
+        HOME
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="spawnCategories(1)"
+      >
+        <ion-icon name="pizza" slot="start"></ion-icon>
+        PLACES TO EAT
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="spawnCategories(2)"
+      >
+        <ion-icon name="pricetags" slot="start"></ion-icon>
+        SHOPPING
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="spawnCategories(3)"
+      >
+        <ion-icon name="glasses" slot="start"></ion-icon>
+        EVENTS
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="openMyFriends()"
+      >
+        <ion-icon name="people" slot="start"></ion-icon>
+        MY FRIENDS
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="openSettings()"
+      >
+        <ion-icon name="person" slot="start"></ion-icon>
+        MY PROFILE
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="openSettings()"
+      >
+        <ion-icon name="cog" slot="start"></ion-icon>
+        SETTINGS
+      </ion-item>
+
+      <ion-item
+        class="ion-padding-bottom"
+        color="dark"
+        lines="full"
+        (click)="logOut()"
+      >
+        <ion-icon name="power" slot="start"></ion-icon>
+        LOG OUT
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-header>
+  <ion-toolbar id="ionToolbarLoggedIn" class="safe--area" color="tertiary">
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleLoyaltyPoints()">
+          <span class="sb-loyalty-points">{{
+              userLoyaltyPoints$ | async | number : '1.0' : 'en-US'
+            }}</span>
+      </ion-button>
+
+      <ion-button (click)="toggleLoyaltyPoints()">
+        <img
+          class="sb-loyalty-points"
+          src="assets/images/rpx-loyalty-points.svg"
+        />
+      </ion-button>
+
+      <ion-button (click)="toggleQRScanner()">
+        <img class="sb-qr" src="assets/images/rpx-qr.png" />
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

@@ -1,0 +1,82 @@
+<app-loading-screen *ngIf="loading"></app-loading-screen>
+
+<div class="rpx-overlay-window">
+  <div
+    class="sb-closeButton"
+    id="sb-closeButtonReward"
+    (click)="closeThis()"
+    [ngClass]="getFullScreenModeClass()"
+  >
+    <i class="fa fa-times"></i>
+  </div>
+
+  <div class="rpx-info-object-title" [ngClass]="getFullScreenModeClass()">
+    <h6 class="rpx-text-gradient sb-titleGreen text-uppercase">
+      RPX COMMUNITY REWARD
+    </h6>
+
+    <img
+      class="sb-miniLogoIcon"
+      src="assets/images/home_imgs/rpx-green-icon.png"
+    />
+
+    <h1 class="rpx-text-gradient sb-titleGreen text-uppercase mb-3">
+      {{ reward.name }}
+    </h1>
+  </div>
+
+  <div class="rpx-info-object-image-list" *ngIf="reward.images !== ''">
+    <div
+      class="rpx-info-object-image-thumb"
+      *ngIf="reward.type === 0"
+      [ngStyle]="{background: 'url(' + reward.images + ')'}"
+    ></div>
+
+    <div
+      class="rpx-info-object-image-thumb discount"
+      *ngIf="reward.type === 1"
+      [ngStyle]="{background: 'linear-gradient(90deg,#35a99f,#64e56f)'}"
+    >
+      <h6 *ngIf="reward.type === 1">
+        <span class="sb-text-light-green-gradient">
+          {{
+            reward.point_cost * (userPointToDollarRatio / 100)
+              | currency : 'USD'
+          }}
+          DISCOUNT
+        </span>
+      </h6>
+    </div>
+  </div>
+
+  <h3 class="sb-text-light-green-gradient text-uppercase mt-5">
+    {{ reward.point_cost | number : '1.00' : 'en-US' }} LP COST
+  </h3>
+
+  <h5 class="rpx-text-gradient text-uppercase mt-2">
+    {{
+      reward.point_cost * (userPointToDollarRatio / 100) | currency : 'USD'
+    }}
+    VALUE
+  </h5>
+
+  <div
+    class="rpx-communityMemberDescription rpx-text-gradient mt-4 mb-4"
+  >
+    {{ reward.description }}
+  </div>
+
+  <ng-container *ngIf="tier">
+    <div
+      class="rpx-communityMemberDescription rpx-text-gradient mt-4 mb-4"
+    >
+      Reward Tier Entrance:
+      <span class="sb-text-light-green-gradient">{{
+        tier.lp_entrance | number : '1.00' : 'en-US'
+      }}</span>
+      Loyalty Points at
+      <span class="sb-text-light-green-gradient">{{ business.name }}</span
+      >.
+    </div>
+  </ng-container>
+</div>

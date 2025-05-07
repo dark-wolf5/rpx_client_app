@@ -1,0 +1,9 @@
+.rpx-confirm-table {
+  position: relative;
+  margin: 0 auto;
+}
+.rpx-button-mini {
+  max-width: 200px;
+  width: 200px;
+  min-width: unset !important;
+}

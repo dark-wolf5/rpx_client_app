@@ -1,0 +1,6 @@
+<app-menu-logged-out class="rpx-app-menu"> </app-menu-logged-out>
+
+<app-welcome
+  *ngIf="getStartedPrompt"
+  (getStartedEvt)="getStarted()"
+></app-welcome>

@@ -1,0 +1,11 @@
+<div class="rpx-threeAdWrapper">
+  <app-nearby-featured-ad
+    *ngFor="let theAd of adList"
+    [lat]="lat"
+    [lng]="lng"
+    [accountType]="accountType$ | async"
+    [eventsClassification]="eventsClassification"
+    [categories]="categories"
+  >
+  </app-nearby-featured-ad>
+</div>

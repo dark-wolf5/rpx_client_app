@@ -1,0 +1,127 @@
+.rpx-overlay-window {
+  padding-bottom: 50px;
+  padding-top: 100px;
+  background: #332f3e;
+  text-align: center;
+  z-index: 97 !important;
+}
+.sb-rewardCreatorWrapper {
+  position: relative;
+  margin: 0 auto;
+  max-width: 900px;
+}
+.sb-input {
+  text-align: center;
+  width: 450px;
+  min-width: 450px;
+}
+.rpx-textarea {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  background: unset;
+  -webkit-text-fill-color: unset;
+  color: black;
+  background-color: #fff;
+  border-radius: 0px;
+}
+.rpx-background-upload-input {
+  display: none;
+}
+.rpx-upload-new-background-holder {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  height: 400px;
+  min-height: 400px;
+  max-height: 400px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  cursor: pointer;
+  border-radius: 0px;
+  border: 1px solid #eeeeee70;
+}
+.rpx-click-or-drag-upload {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100%;
+  min-width: 100%;
+  text-align: center;
+  background-color: rgba(17, 15, 20, 0.82);
+  font-size: 20px;
+  letter-spacing: 4px;
+}
+img.sb-loyalty-points {
+  width: 15px;
+  min-width: 15px;
+  max-width: 15px;
+  cursor: default;
+}
+img.sb-loyalty-points:hover {
+  width: 15px;
+  min-width: 15px;
+  max-width: 15px;
+}
+h5 {
+  font-size: 1rem;
+}
+.fa-check {
+  background: unset !important;
+  color: white;
+  margin-left: 5px;
+}
+@media (max-width: 768px) {
+  .rpx-upload-new-background-holder,
+  .rpx-textarea {
+    max-width: 450px;
+    width: 450px;
+    min-width: 450px;
+  }
+}
+@media (max-width: 600px) {
+  .sb-input,
+  .rpx-input-info {
+    max-width: 90%;
+    width: 90%;
+    min-width: 90%;
+    text-align: left;
+  }
+  .rpx-upload-new-background-holder {
+    width: 90%;
+    min-width: 90%;
+    max-width: 90%;
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    border-radius: 5px;
+  }
+  .rpx-input-info {
+    font-size: 0.8rem;
+  }
+  .rpx-upload-new-background-holder {
+    border: 1px solid #eeeeee24;
+  }
+  .rpx-click-or-drag-upload {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+    min-width: 100%;
+    text-align: center;
+    background-color: rgb(0 0 0 / 41%);
+    font-size: 15px;
+  }
+  .rpx-r-success-title {
+    font-size: 1rem;
+  }
+  .rpx-textarea {
+    width: 92%;
+    min-width: 92%;
+    max-width: 92%;
+  }
+}

@@ -1,0 +1,14 @@
+<app-menu-logged-in-bar
+  (goToLpEvt)="toggleLoyaltyPoints()"
+  (goToQrCodeEvt)="toggleQRScanner()"
+  (spawnCategoriesEvt)="spawnCategories($event)"
+  (closeMapEvt)="closeMapApp()"
+></app-menu-logged-in-bar>
+
+<div class="ion-page" id="main-content">
+  <!-- we neeed the main-ion-content class so that we can sett he background to transparent for the scanner -->
+  <ion-content class="main-ion-content has-header" color="dark">
+    <!--<app-event-menu *ngIf="eventMenuOpen"></app-event-menu>-->
+    <app-map #rpxMap *ngIf="mapApp$ | async"></app-map>
+  </ion-content>
+</div>

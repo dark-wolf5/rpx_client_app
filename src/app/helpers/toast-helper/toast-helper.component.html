@@ -1,0 +1,36 @@
+<div class="rpx-toast-input-overlay" (click)="dismissToast()">
+  <div
+    class="rpx-toast-input-box rpx-confirm-toast-box"
+    *ngIf="helper_config.type === 'confirm'"
+    [ngStyle]="{'background-color': bg_color}"
+  >
+    <div class="rpx-toast-text">
+      {{ helper_config.text.info_text }}
+    </div>
+
+    <table class="rpx-confirm-table">
+      <tr>
+        <td (click)="confirm()">
+          <div class="rpx-button rpx-button-mini">
+            {{ helper_config.text.confirm }}
+          </div>
+        </td>
+        <td (click)="decline()">
+          <div class="rpx-button rpx-button-mini">
+            {{ helper_config.text.decline }}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div
+    class="rpx-toast-input-box rpx-confirm-toast-box"
+    *ngIf="helper_config.type === 'acknowledge'"
+    [ngStyle]="{'background-color': bg_color}"
+  >
+    <div class="rpx-toast-text">
+      {{ helper_config.text.info_text }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+.sb-dashboardWrapper{
+  display: block;
+  text-align: center;
+}
+
+ion-img {
+  max-width: 80px;
+  max-height: 80px;
+  min-height: 80px;
+  min-width: 80px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#my-friends-wrapper,
+#find-people-wrapper {
+  position: relative;
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+  justify-content: stretch;
+  justify-items: center;
+}
+
+.get-started {
+  --background: #53bf61;
+  --color: white;
+}
+
+.sb-input.search {
+  min-width: 85%;
+  width: 85%;
+  max-width: 85%;
+}
+
+.importContacts {
+  background: #53bf61;
+  color: white !important;
+  --color: white !important;
+}
+
+.friendshipList {
+  background: #222428 !important;
+  --color: white;
+
+  ion-item {
+    --background: var(--ion-item-background);
+  }
+}

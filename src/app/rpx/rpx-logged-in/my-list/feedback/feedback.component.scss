@@ -1,0 +1,14 @@
+ion-item {
+  --ion-item-background: rgba(0, 0, 0, 0.2);
+}
+ion-textarea {
+  --border-radius: 0;
+  min-width: 100%;
+}
+textarea {
+  border-radius: 0 !important;
+}
+form {
+  width: 100%;
+  min-width: 100%;
+}

@@ -1,0 +1,59 @@
+<ng-container *ngIf="(scannerStarted$ | async) === false">
+  <div class="wrapper">
+    <!-- Check if user has any pending steps to start using their account -->
+    <div class="sb-dashboardWrapper">
+      <h6 class="sb-text-light-green-gradient mb-3 mt-4">GET WHAT YOU WANT</h6>
+
+      <div class="sb-optionGet" (click)="spawnCategories(1)">
+        <img src="assets/images/home_imgs/find-places-to-eat.png" /><br />
+        <span class="rpx-text-gradient">food</span>
+      </div>
+
+      <div class="sb-optionGet" (click)="spawnCategories(2)">
+        <img src="assets/images/home_imgs/find-places-for-shopping.png" /><br />
+        <span class="rpx-text-gradient">retail</span>
+      </div>
+
+      <div class="sb-optionGet" (click)="spawnCategories(3)">
+        <img src="assets/images/home_imgs/find-events.png" /><br />
+        <span class="rpx-text-gradient">events</span>
+      </div>
+    </div>
+
+    <div class="sb-dashboardWrapper">
+      <app-my-meet-ups
+        (findPeopleEvt)="findPeople()"
+        (spawnCategoriesEvt)="spawnCategories($event)"
+      ></app-my-meet-ups>
+    </div>
+
+    <div class="sb-dashboardWrapper" #lpAppAnchor>
+      <app-loyalty-points
+        [fullScreenWindow]="false"
+        (openRedeemed)="redeemedLp()"
+        #loyaltyPointsApp
+      ></app-loyalty-points>
+    </div>
+
+    <div class="sb-dashboardWrapper" #qrCodeAppAnchor>
+      <img
+        src="assets/images/rpx-qr.png"
+        class="sb-qrImage"
+        (click)="startQrScanner()"
+      />
+
+      <div class="rpx-button" (click)="startQrScanner()">
+        <i class="fas fa-qrcode" style="margin-right: 5px"></i>
+        <span class="rpx-text-gradient">SCAN NOW</span>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<app-qr
+  [fullScreenWindow]="false"
+  *ngIf="scannerStarted$ | async"
+  (closeQrUserEvt)="closeQrScanner()"
+  #qrApp
+>
+</app-qr>

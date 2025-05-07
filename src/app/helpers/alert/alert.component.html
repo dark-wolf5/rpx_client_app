@@ -1,0 +1,27 @@
+<div class="rpx-overlay-window p-3">
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col>
+        <h1 class="rpx-text-gradient">{{ data.alertTitle }}</h1>
+
+        <p class="pt-3" [innerHTML]="data.alertText"></p>
+
+        <div
+          style="color: white; text-decoration: underline"
+          (click)="openExternal(data.alertLink)"
+        >
+          {{ data.alertLinkText }}
+        </div>
+
+        <div>
+          <button class="btn rpx-button" (click)="continueWithAction()">
+            CONTINUE
+          </button>
+          <button class="btn rpx-button" (click)="cancelAction()">
+            CANCEL
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

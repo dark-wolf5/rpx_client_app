@@ -1,0 +1,195 @@
+<ion-header class="my-list-header">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>RPX FRIENDS</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="dark">
+  <app-loading-screen *ngIf="loading$ | async"></app-loading-screen>
+
+  <div class="ion-justify-content-center">
+    <ion-segment>
+      <ion-segment-button value="friends" content-id="friends" id="segment-button-friends" color="dark">
+        <ion-label>My Friends</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="people" content-id="people" id="segment-button-people" color="dark">
+        <ion-label>Find People</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-segment-view>
+      <ion-segment-content id="friends">
+        <div class="sb-dashboardWrapper">
+          <ng-container *ngIf="(myFriendListing$ | async)?.length > 0 else noFriends">
+            <ion-list class="friendshipList">
+              <ion-item class="pt-2 pb-2" color="dark" size="large" *ngFor="let friendship of myFriendListing$ | async; trackBy: identify">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img [src]="friendship.user_profile.rpx_user.default_picture" />
+                </ion-avatar>
+
+                <ng-container *ngIf="friendship.user_profile?.rpx_user?.first_name else usernameTem">
+                  <ion-label>
+                    {{ friendship.user_profile.rpx_user.first_name }} {{ friendship.user_profile.rpx_user?.last_name }}
+                  </ion-label>
+                </ng-container>
+
+                <ng-template #usernameTem>
+                  <ion-label>
+                    {{ friendship.user_profile.username }}
+                  </ion-label>
+                </ng-template>
+
+                <ng-container [ngSwitch]="friendship.relationship">
+                  <ng-container *ngSwitchCase="FRIENDSHIP_STATUS_E.PENDING">
+                    <ng-container *ngIf="friendship.user_id !== myUserId">
+                      <ion-button slot="end" (click)="acceptFriendRequest(friendship.user_profile.id, friendship.user_profile.rpx_user.first_name)">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button slot="end" (click)="denyFriendship(friendship.id, friendship.user_profile.rpx_user.first_name)">
+                        <ion-icon name="close-circle-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button slot="end" (click)="blockFriend(friendship.user_profile.id, friendship.user_profile.rpx_user.first_name)">
+                        <ion-icon name="ban-outline"></ion-icon>
+                      </ion-button>
+                    </ng-container>
+
+                    <ng-container *ngIf="friendship.user_id === myUserId">
+                      <ion-button slot="end" (click)="cancelRequest(friendship.id, friendship.user_profile.rpx_user.first_name)">
+                        <ion-icon name="time-outline"></ion-icon>
+                      </ion-button>
+                      <ion-button slot="end" (click)="blockFriend(friendship.user_profile.id, friendship.user_profile.rpx_user.first_name)">
+                        <ion-icon name="ban-outline"></ion-icon>
+                      </ion-button>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="FRIENDSHIP_STATUS_E.ACCEPTED">
+                    <ion-button slot="end" (click)="removeFriend(friendship.id, friendship.user_profile.rpx_user.first_name)">
+                      <ion-icon name="remove-circle-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button slot="end" (click)="blockFriend(friendship.id, friendship.user_profile.rpx_user.first_name)">
+                      <ion-icon name="ban-outline"></ion-icon>
+                    </ion-button>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="FRIENDSHIP_STATUS_E.BLOCKED">
+                    <ion-button slot="end" (click)="unblockFriend(friendship.id, friendship.user_profile.rpx_user.first_name)">
+                      <ion-icon name="remove-circle-outline" slot="end"></ion-icon>
+                      UNBLOCK
+                    </ion-button>
+                  </ng-container>
+                </ng-container>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+
+          <ng-template #noFriends>
+            <div id="my-friends-wrapper" class="mt-5 mb-5">
+                <p class="mt-2 ion-padding">
+                  You have no Rpx friends.
+                </p>
+                <h6 class="sb-text-light-green-gradient">How it Works</h6>
+
+                <p class="ion-padding">
+                  First, search for your friend's profiles or invite them through the app. Once you have one or more friends,
+                  you'll be able to create <span class="sb-text-light-green-gradient" (click)="meetUpExternal()">meet-ups</span> and
+                  <span class="sb-text-light-green-gradient" (click)="sharedExperiencesExternal()">shared-experiences</span> with them.
+                </p>
+
+                <ion-buttons>
+                  <ion-button class="get-started p-2" (click)="switchSection('people')">
+                    <ion-icon name="people" slot="end"></ion-icon>
+                    find people
+                  </ion-button>
+                </ion-buttons>
+            </div>
+          </ng-template>
+        </div>
+      </ion-segment-content>
+
+      <ion-segment-content id="people">
+        <div class="sb-dashboardWrapper">
+          <div id="find-people-wrapper" class="mt-5 mb-5">
+            <p class="sb-text-light-green-gradient">
+              Search for friends.
+            </p>
+
+            <input class="sb-input search" (keyup)="searchFriends($event)" placeholder="Search..." />
+
+            <h6 class="rpx-text-gradient ion-padding">OR</h6>
+
+            <div>
+              <ng-container *ngIf="showEnablePermissions$() === true">
+                <p>You must enable Contacts Permission to import and invite your contacts.</p>
+
+                <ion-buttons>
+                  <ion-button class="importContacts p-2" (click)="enablePermissions()">
+                    <ion-icon name="people" slot="end"></ion-icon>
+                    ENABLE PERMISSIONS
+                  </ion-button>
+                </ion-buttons>
+              </ng-container>
+              <ng-container *ngIf="showEnablePermissions$() === false">
+                <ion-buttons>
+                  <ion-button class="importContacts p-2" (click)="importContacts()">
+                    <ion-icon name="people-circle-outline" slot="end"></ion-icon>
+                    import contacts
+                  </ion-button>
+                </ion-buttons>
+              </ng-container>
+            </div>
+          </div>
+
+          <ng-container *ngIf="importContactList$()?.length > 0">
+            <ion-list class="friendshipList">
+              <ion-item class="pt-2 pb-2" color="dark" *ngFor="let importContact of importContactList$()">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img [src]="importContact.image?.base64String ?? './../../../assets/images/guest-rpx-user-01.png'" />
+                </ion-avatar>
+
+                <ion-label>
+                  {{ importContact.name.display }}
+                </ion-label>
+
+                <ion-buttons>
+                  <ion-button (click)="inviteContact(importContact)">
+                    send
+                    <ion-icon name="mail-outline" size="medium" slot="end"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+
+          <ng-container *ngIf="(mySearchResultList$ | async)?.length > 0">
+            <ion-list class="friendshipList">
+              <ion-item class="pt-2 pb-2" color="dark" *ngFor="let friend of (mySearchResultList$ | async)">
+                <ion-avatar aria-hidden="true" slot="start">
+                  <img [src]="friend.rpx_user.default_picture" />
+                </ion-avatar>
+
+                <ng-container *ngIf="friend.rpx_user?.first_name else usernameTem">
+                  <ion-label>
+                    {{ friend.rpx_user.first_name }} {{ friend.rpx_user?.last_name }}
+                  </ion-label>
+                </ng-container>
+
+                <ng-template #usernameTem>
+                  <ion-label>
+                    {{ friend.username }}
+                  </ion-label>
+                </ng-template>
+
+                <ion-button slot="end" (click)="addFriend(friend.id, friend.rpx_user.first_name)">
+                  <ion-icon name="add-circle-outline" size="medium"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+        </div>
+      </ion-segment-content>
+    </ion-segment-view>
+  </div>
+</ion-content>

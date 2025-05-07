@@ -1,0 +1,126 @@
+<div class="barcode-scanner-modal">
+  <ng-container *ngIf="(showEnablePermission$ | async) === false">
+    <div class="scanner-top">
+      <ion-text
+        class="rpx-text-gradient sb-scanQrTitle text-center text-uppercase mt-5 pt-5"
+      >
+        <img
+          class="sb-qrTitleImage"
+          src="../../../../assets/images/qr/rpx-qr.png"
+        />
+        SCAN AND EARN
+      </ion-text>
+    </div>
+
+    <div id="scannerMiddle" class="scanner-middle">
+      <ng-container *ngIf="rewarded === true || awarded === true">
+        <div *ngIf="awarded === true">
+          <h2 class="sb-text-light-green-gradient mt-4 mb-4">SUCCESS</h2>
+
+          <i class="fas fa-check mb-4"></i>
+
+          <div
+            class="success-msg rpx-text-gradient text-center text-uppercase pt-4 mb-4"
+          >
+            You've earned<br />
+            <span class="sb-text-light-green-gradient">
+              {{ userLoyaltyPoints$ | async | number : '1.0' : 'en-US' }}
+            </span>
+            <br />loyalty points<br /><br />
+            <span class="sb-text-light-green-gradient">
+              {{ dollarValue$ | async | currency : 'USD' }}
+            </span>
+            <br />dollar value
+          </div>
+
+          <div class="sb-earnedPoints animated fadeOutUp">
+            <span class="sb-text-light-green-gradient"
+              >+{{
+                userLoyaltyPoints$ | async | number : '1.0' : 'en-US'
+              }}</span
+            >
+          </div>
+        </div>
+
+        <div *ngIf="rewarded === true">
+          <p class="rpx-text-gradient mt-4 mb-4">
+            Reward redeemed successfully. <br />
+            Please show your host.
+          </p>
+
+          <div
+            class="sb-menuItem"
+            [ngStyle]="{background: 'url(' + (reward$ | async).images + ')'}"
+          >
+            <h6>
+              <span class="rpx-text-gradient">
+                {{ (reward$ | async).name }}
+              </span>
+            </h6>
+          </div>
+
+          <div class="sb-earnedPoints animated fadeOutUp">
+            <span class="sb-text-red-gradient"
+              >-{{ pointsCharged$ | async | number : '1.0' : 'en-US' }}</span
+            >
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="scanner-bottom ion-padding">
+      <div
+        *ngIf="awarded === false && rewarded === false"
+      >
+        <p class="sb-helpInfo rpx-text-gradient text-center text-uppercase">
+          Ask for<br />the<br /><span class="sb-text-light-green-gradient"
+            >Rpx QR CODE</span
+          >
+        </p>
+      </div>
+      <button
+        class="rpx-button text-uppercase mt-3"
+        (click)="closeQrUser()"
+      >
+        close
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="(showEnablePermission$ | async) === true">
+    <div
+      class="sb-dashboardWrapper sb-v-wrapper"
+      style="
+        display: grid;
+        min-height: 70vh;
+        text-align: center;
+        align-content: center;
+      "
+    >
+      <i class="fas fa-camera"></i>
+
+      <h2
+        class="rpx-text-gradient text-uppercase mt-4"
+        style="display: inline-block"
+      >
+        BONKERS!
+      </h2>
+
+      <div class="rpx-text-gradient mt-2">CAMERA DISABLED</div>
+
+      <p style="color: white">
+        Rpx needs access to your camera to scan QR codes and claim rewards.
+      </p>
+
+      <p class="sb-locationList text-center mt-3" (click)="openAppSettings()">
+        <span style="color: white">OPEN SETTINGS</span>
+      </p>
+
+      <div class="rpx-button" (click)="startQrCodeScanner()">
+        <span class="rpx-text-gradient text-uppercase mt-5 cursor-pointer"
+          >TRY AGAIN</span
+        >
+      </div>
+    </div>
+  </ng-container>
+</div>

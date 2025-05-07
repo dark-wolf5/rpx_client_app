@@ -1,0 +1,19 @@
+.rpx-main-holder {
+  z-index: 96;
+  padding-top: 50px;
+}
+.rpx-app-menu {
+  z-index: 99;
+}
+
+@media (max-width: 560px) {
+  .rpx-menu-page-padding-top-not-logged {
+    padding-top: 66px;
+  }
+}
+
+@media (max-width: 360px) {
+  .rpx-menu-page-padding-top-not-logged {
+    padding-top: 52px;
+  }
+}

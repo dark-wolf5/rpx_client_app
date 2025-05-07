@@ -1,0 +1,451 @@
+<app-loading-screen *ngIf="loading$ | async"></app-loading-screen>
+
+<ion-content class="pt-5 pb-5" #rpxSettingsWindow>
+  <div class="rpx-block" style="padding-top: 60px;">
+    <div #rpxSettingsInfoText class="rpx-text-gradient mb-4">
+      {{ rpxSettingsInfoText$ | async }}
+    </div>
+    <form [formGroup]="settingsForm" *ngIf="settingsFormInitiated$ | async">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div
+              *ngIf="
+                (submitted$ | async) && f.rpxUsername.errors;
+                else username_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error"
+            >
+              <div *ngIf="f.rpxUsername.errors.required">
+                You must enter a username!
+              </div>
+
+              <div
+                *ngIf="
+                  f.rpxUsername.errors.maxlength ||
+                  f.rpxUsername.errors.wrongLength
+                "
+              >
+                Your username cannot be longer than 15 characters.
+              </div>
+
+              <div *ngIf="f.rpxUsername.errors.illegalChars">
+                Must only contain letters, numbers, dots, and underscores.
+              </div>
+            </div>
+
+            <ng-template #username_normal>
+              <label
+                #rpxSettingsIssues
+                class="rpx-input-info rpx-text-gradient mb-2"
+              >
+                Change your username.
+              </label>
+            </ng-template>
+            <input
+              class="sb-input"
+              formControlName="rpxUsername"
+              type="text"
+              value="username"
+              maxlength="35"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              *ngIf="
+                (submitted$ | async) && f.rpxFirstName.errors;
+                else user_first_name_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+            >
+              <div *ngIf="f.rpxFirstName.errors.required">
+                Please enter your first name.
+              </div>
+
+              <div *ngIf="f.rpxFirstName.errors.maxlength">
+                Your first name cannot be longer than 72 characters.
+              </div>
+            </div>
+            <ng-template #user_first_name_normal>
+              <label class="rpx-input-info rpx-text-gradient mb-2">
+                What is your first name?
+              </label>
+            </ng-template>
+            <input
+              class="sb-input"
+              formControlName="rpxFirstName"
+              type="text"
+              value="name"
+              maxlength="72"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              *ngIf="
+                (submitted$ | async) && f.rpxLastName.errors;
+                else user_last_name_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+            >
+              <div *ngIf="f.rpxLastName.errors.required">
+                Please enter your last name.
+              </div>
+
+              <div *ngIf="f.rpxLastName.errors.maxlength">
+                Your last name cannot be longer than 72 characters.
+              </div>
+            </div>
+
+            <ng-template #user_last_name_normal>
+              <label class="rpx-input-info rpx-text-gradient mb-2">
+                What is your last name?
+              </label>
+            </ng-template>
+
+            <input
+              class="sb-input"
+              formControlName="rpxLastName"
+              type="text"
+              value="name"
+              maxlength="72"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              *ngIf="
+                (submitted$ | async) && f.rpxEmail.errors;
+                else user_email_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+            >
+              <div *ngIf="f.rpxEmail.errors.required">
+                Please enter your email.
+              </div>
+
+              <div *ngIf="f.rpxEmail.errors.notUnique">
+                This email is already taken.
+              </div>
+            </div>
+
+            <ng-template #user_email_normal>
+              <label class="rpx-input-info rpx-text-gradient mb-2">
+                What is your email?
+              </label>
+            </ng-template>
+
+            <input
+              class="sb-input"
+              formControlName="rpxEmail"
+              type="text"
+              value="email"
+              maxlength="135"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <label class="rpx-input-info rpx-text-gradient mb-2">
+              Phone number.
+            </label>
+            <input
+              class="sb-input"
+              type="tel"
+              mask="(000) 000-0000"
+              autocomplete="tel"
+              placeholder="(555) 555-5555"
+              formControlName="rpxPhoneNumber"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="showSmsOptIn$ | async">
+          <ion-col>
+            <mat-slide-toggle
+                    class="rpx-text-gradient mt-4"
+                    formControlName="smsOptIn"
+                    (change)="updateSubscribedToSms($event)"
+            >
+              SMS Notifications
+            </mat-slide-toggle>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              class="rpx-button rpx-save-settings-button text-uppercase mb-5"
+              (click)="saveSettings()"
+            >
+              Save Settings
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+
+  <div class="rpx-block mb-0" *ngIf="settingsFormInitiated$ | async">
+    <form [formGroup]="passwordForm">
+      <ion-grid id="rpx-password-table">
+        <!-- Change Password Block -->
+        <ion-row>
+          <ion-col>
+            <div
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+              #rpxPasswordInfoText
+            >
+              {{ errorText$ | async }}
+            </div>
+
+            <div
+              *ngIf="
+                (passwordSubmitted$ | async) && g.rpxPassword.errors;
+                else rpx_password_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+            >
+              <div *ngIf="g.rpxPassword.errors.required">
+                Please provide a password.
+              </div>
+
+              <div *ngIf="g.rpxPassword.errors.wrongLength">
+                Password must be 1 to 15 characters long.
+              </div>
+
+              <div *ngIf="g.rpxPassword.errors.oneNumber">
+                Password must contain at least one number (0-9)!
+              </div>
+
+              <div *ngIf="g.rpxPassword.errors.oneLowerCase">
+                Password must contain at least one lowercase letter (a-z)!
+              </div>
+
+              <div *ngIf="g.rpx_password.errors.oneUpperCase">
+                Password must contain at least one uppercase letter (A-Z)!
+              </div>
+            </div>
+            <ng-template #rpx_password_normal>
+              <label
+                class="rpx-input-info rpx-text-gradient mb-2"
+                #rpx_password_change_info_text
+              >
+                Change your password.
+              </label>
+            </ng-template>
+            <input
+              class="sb-input"
+              formControlName="rpxPassword"
+              type="password"
+              placeholder="Your new password."
+              autocomplete="false"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              *ngIf="
+                (passwordSubmitted$ | async) && g.rpxConfirmPassword.errors;
+                else rpx_confirm_password_normal
+              "
+              class="rpx-input-info rpx-text-gradient rpx-error mb-2"
+            >
+              <div *ngIf="g.rpxConfirmPassword.errors.required">
+                Please confirm your password.
+              </div>
+            </div>
+
+            <ng-template #rpx_confirm_password_normal>
+              <label class="rpx-input-info rpx-text-gradient mb-2">
+                Confirm your new password.
+              </label>
+            </ng-template>
+
+            <input
+              class="sb-input"
+              formControlName="rpxConfirmPassword"
+              type="password"
+              placeholder="Confirm your password."
+              autocomplete="false"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div
+              class="rpx-button rpx-save-settings-button text-uppercase mb-5"
+              (click)="savePassword()"
+            >
+              CHANGE PASSWORD
+            </div>
+          </ion-col>
+        </ion-row>
+        <!-- End Of Change Password Block -->
+      </ion-grid>
+
+      <div class="rpx-overlay-window" *ngIf="savePasswordBool$ | async">
+        <div class="sb-closeButton" (click)="cancelPasswordSet()">
+          <i class="fa fa-times"></i>
+        </div>
+
+        <div class="rpx-toast-input-box">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <div
+                  *ngIf="
+                (passwordSubmitted$ | async) && g.rpxCurrentPassword.errors;
+                else rpx_current_password_normal
+              "
+                  class="rpx-input-info rpx-text-gradient rpx-error"
+                >
+                  <div *ngIf="g.rpxCurrentPassword.errors.required">
+                    Please enter your current password.
+                  </div>
+                </div>
+
+                <ng-template #rpx_current_password_normal>
+                  <div class="rpx-input-info mb-2" #currentPasswordInfo>
+                    {{ currentPasswordInfoText$ | async }}
+                  </div>
+                </ng-template>
+
+                <input
+                  class="sb-input"
+                  type="password"
+                  formControlName="rpxCurrentPassword"
+                  placeholder="Enter your current password."
+                  autocomplete="false"
+                />
+
+                <div
+                  class="rpx-button rpx-button-mini"
+                  (click)="completeSavePassword()"
+                >
+                  COMPLETE CHANGE
+                </div>
+                <div
+                  class="rpx-text-gradient mt-4"
+                  (click)="cancelPasswordSet()"
+                >
+                  CANCEL
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="rpx-block">
+    <ion-grid id="rpx-deactivate-table"
+      *ngIf="settingsFormInitiated$ | async"
+    >
+      <ion-row>
+        <ion-col>
+          <div class="rpx-text-gradient text-uppercase deactivate-account pt-4 pb-4" (click)="startDeactivateAccount()" color="primary">
+            Deactivate Account
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="mt-5 mb-5 cursor-pointer" (click)="closeWindow()">
+            <span class="rpx-text-gradient">CLOSE</span>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<div
+  class="rpx-overlay-window d-flex flex-column align-content-center justify-content-center align-items-center"
+  *ngIf="(accountDeactivation$ | async) && (isSocialAccount$ | async) === false"
+>
+  <form [formGroup]="deactivationForm">
+    <div class="rpx-toast-input-box">
+      <h5 class="rpx-text-gradient">DEACTIVATE ACCOUNT</h5>
+
+      <div
+        *ngIf="
+          (deactivationSubmitted$ | async) &&
+            h.rpxDeactivationPassword.errors;
+          else rpx_deactivate_normal
+        "
+        class="rpx-input-info rpx-text-gradient rpx-error"
+      >
+        <div *ngIf="h.rpxDeactivationPassword.errors.required">
+          Please enter your current password.
+        </div>
+      </div>
+
+      <ng-template #rpx_deactivate_normal>
+        <div
+          class="rpx-toast-info rpx-text-gradient rpx-deactivation-info"
+          #rpxDeactivationInfo
+        >
+          Enter your password to deactivate your account.
+        </div>
+      </ng-template>
+
+      <input
+        class="sb-input"
+        type="password"
+        formControlName="rpxDeactivationPassword"
+        autocomplete="false"
+      />
+
+      <div class="mt-4 mb-1" style="color: white;">
+        Would you like to permanently delete your account?
+      </div>
+
+      <input type="hidden"
+             formControlName="rpx_deactivation_type"
+      />
+      <mat-slide-toggle [style.color]="'#fff'"
+                        (change)="updateRpxDeactivationType()"
+      ></mat-slide-toggle>
+
+      <div
+        class="rpx-button rpx-button-mini text-uppercase"
+        (click)="deactivateAccount()"
+      >
+        Deactivate
+      </div>
+
+      <div
+        class="rpx-text-gradient text-center text-uppercase mt-4"
+        (click)="cancelDeactivateAccount()"
+      >
+        CANCEL
+      </div>
+    </div>
+  </form>
+</div>
+
+<div
+  class="rpx-overlay-window d-flex flex-column align-content-center justify-content-center align-items-center"
+  *ngIf="(accountDeactivation$ | async) && (isSocialAccount$ | async)"
+>
+  <h5 class="rpx-text-gradient">DEACTIVATE ACCOUNT</h5>
+
+  <div
+    class="rpx-button rpx-button-mini text-uppercase"
+    (click)="deactivateAccount()"
+  >
+    Deactivate
+  </div>
+
+  <div
+    class="rpx-text-gradient text-center text-uppercase mt-4"
+    (click)="cancelDeactivateAccount()"
+  >
+    CANCEL
+  </div>
+</div>

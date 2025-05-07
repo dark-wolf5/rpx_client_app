@@ -1,0 +1,127 @@
+<div class="log-in-wrapper">
+  <p
+    class="sb-signUpGeneralInstructions text-uppercase text-center mt-4"
+    id="sign_up_general_instructions"
+    #rpxSignUpIssues
+  >
+    <span class="rpx-text-gradient">Login to earn rewards</span>
+  </p>
+
+  <form [formGroup]="logInForm">
+    <div
+      *ngIf="(submitted$ | async) && f.rpxUsername?.errors"
+      class="rpx-invalid-feedback text-uppercase rpx-text-gradient rpx-error"
+    >
+      <span
+        *ngIf="
+          f.rpxUsername.errors?.required ||
+          f.rpxUsername.errors?.emptyUsername
+        "
+      >
+        USERNAME OR E-MAIL REQUIRED.
+      </span>
+
+      <span *ngIf="f.rpxUsername.errors?.wrongLength">
+        USERNAME MUST BE BETWEEN 5 AND 15 CHARACTERS.
+      </span>
+
+      <span *ngIf="f.rpxUsername.errors?.illegalChars">
+        USERNAME MUST ONLY CONTAIN LETTERS, NUMBERS, AND UNDERSCORES.
+      </span>
+    </div>
+
+    <div *ngIf="(submitted$ | async) && f.rpxUsername?.errors">
+      <div
+        class="rpx-invalid-feedback text-uppercase rpx-text-gradient rpx-error mb-2"
+        *ngIf="f.rpxUsername.errors?.wrongAccountType"
+      >
+        <span> Log-in using SB Business app. </span>
+      </div>
+
+      <div
+        class="rpx-invalid-feedback text-uppercase rpx-text-gradient rpx-error mb-2"
+        *ngIf="f.rpxUsername.errors?.rpxAccount"
+      >
+        <span> You signed up with an email address. </span>
+      </div>
+    </div>
+
+    <table class="sb-inputWithIconWrapper">
+      <tr>
+        <td class="sb-iconInInputWrapper">
+          <i class="fa fa-envelope"></i>
+        </td>
+
+        <td>
+          <input
+            class="sb-input"
+            id="rpxLoginUsername"
+            formControlName="rpxUsername"
+            type="text"
+            placeholder="USERNAME/EMAIL"
+            autocomplete="username"
+          />
+        </td>
+      </tr>
+    </table>
+
+    <div
+      *ngIf="(submitted$ | async) && f.rpxPassword?.errors"
+      class="rpx-invalid-feedback rpx-text-gradient rpx-error"
+    >
+      <span *ngIf="f.rpxPassword.errors?.required">
+        PASSWORD IS REQUIRED.
+      </span>
+    </div>
+
+    <table class="sb-inputWithIconWrapper">
+      <td class="sb-iconInInputWrapper">
+        <i class="fa fa-lock"></i>
+      </td>
+
+      <td>
+        <input
+          class="sb-input"
+          [type]="!passwordShow ? 'password' : 'text'"
+          formControlName="rpxPassword"
+          autocomplete="password"
+          placeholder="PASSWORD"
+        />
+        <fa-icon
+          class="fa-eye"
+          [icon]="faEye"
+          (click)="togglePassword()"
+          *ngIf="!passwordShow"
+        ></fa-icon>
+        <fa-icon
+          class="fa-eye"
+          [icon]="faEyeSlash"
+          (click)="togglePassword()"
+          *ngIf="passwordShow"
+        ></fa-icon>
+      </td>
+    </table>
+
+    <div
+      class="rpx-rel-div rpx-forgot-your-pass rpx-text-link"
+      (click)="openForgotPassword()"
+    >
+      FORGOT YOUR PASSWORD?
+    </div>
+  </form>
+
+  <button class="btn rpx-button rpx-padding mt-3" (click)="initLogIn()">
+    LOGIN
+  </button>
+
+  <div
+    class="rpx-rel-div rpx-padding rpx-text-link"
+    (click)="signUp()"
+  >
+    SIGN UP NOW
+  </div>
+
+  <div></div>
+
+  <div class="sb-logo mt-3 mb-5"></div>
+</div>

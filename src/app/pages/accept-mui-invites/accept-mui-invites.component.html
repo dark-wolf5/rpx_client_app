@@ -1,0 +1,108 @@
+<ion-header class="my-list-header">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Accept Meet Up Invite</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="rpx-inviteList">
+          <h3>Meet Up</h3>
+
+          <p>Who's going?</p>
+
+          <div class="whosGoingWrapper mt-3 mb-3">
+            <ng-container *ngIf="(ownerProfile$ | async) as p">
+              <div class="sbAura-green">
+                <ion-label>{{ (p?.rpx_user.first_name || p?.username) | shortenDisplayName }}</ion-label>
+                <ion-avatar aria-hidden="true" slot="start" id="click-avatar-owner">
+                  <img [src]="p?.rpx_user?.default_picture ?? './../../assets/images/guest-rpx-user-01.png'" />
+                </ion-avatar>
+
+                <ion-popover trigger="click-avatar-owner" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding"><span style="color: white;">{{ (p?.rpx_user.first_name || p?.username)}}</span></ion-content>
+                  </ng-template>
+                </ion-popover>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="(importContactList$ | async)?.length > 0">
+              <div *ngFor="let p of (importContactList$ | async)" [className]="auraColorContact(p)">
+                <ion-label>{{ p?.name | shortenDisplayName }}</ion-label>
+                <ion-avatar aria-hidden="true" slot="start" id="click-avatar">
+                  <img [src]="p?.image ?? './../../assets/images/guest-rpx-user-01.png'" />
+                </ion-avatar>
+
+                <ion-popover trigger="click-avatar" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding"><span style="color: white;">{{ p.name }}</span></ion-content>
+                  </ng-template>
+                </ion-popover>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="(userProfileList$ | async)?.length > 0">
+              <div *ngFor="let p of (userProfileList$ | async); trackBy: identify" [className]="auraColorSb(p.rpx_user)">
+                <ion-label>{{ (p?.rpx_user.first_name || p?.username)| shortenDisplayName  }}</ion-label>
+                <ion-avatar slot="start" id="click-avatar-profile">
+                  <img [src]="p?.rpx_user.default_picture" />
+                </ion-avatar>
+
+                <ion-popover trigger="click-avatar-profile" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding"><span style="color: white;">{{ (p?.rpx_user.first_name || p?.username) }}</span></ion-content>
+                  </ng-template>
+                </ion-popover>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="rpx-meetUp">
+          <h3 class="rpx-text-gradient">
+            Meet Up Details
+          </h3>
+
+          <p>
+            {{ meetUpTime$ | async }}
+          </p>
+
+          <p>
+            location: <b>{{ (meetUpLocation$ | async)?.name }}</b>
+          </p>
+
+          <p>
+            <img src="{{ (meetUpPhotoLink$ | async) }}" />
+          </p>
+
+          <p>
+            <a  class="rpx-text-gradient" href="{{ (meetUpLink$ | async) }}">Visit Link</a>
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="rpx-AcceptInvite">
+          <p class="sb-text-light-green-gradient">Do you want to accept {{ (userFullName$ | async) }}'s invitation?</p>
+
+          <ion-button (click)="yes()">
+            <ion-icon name="people" slot="end"></ion-icon>
+            YES
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
